@@ -1,5 +1,5 @@
 from typing import Optional
-from pydantic import BaseModel, EmailStr, Field, constr, conint
+from pydantic import BaseModel, EmailStr, Field, constr, conint, create_model
         
         
 class SchemaSupplier(BaseModel):
@@ -29,37 +29,16 @@ class SchemaSupplier(BaseModel):
                 "active": True
                 }
             }
-
-# Update Supplier
-
-class SchemaSupplierUpdate(BaseModel):
-    name: Optional[constr(min_length=3, max_length=50, strict=True)]
-    lastname: Optional[constr(min_length=3, max_length=50, strict=True)]
-    email: Optional[EmailStr]
-    phone: Optional[conint(min_length=10, max_length=10,strict=True)]
-    address: Optional[constr(min_length=3, max_length=50, strict=True)]
-    city: Optional[constr(min_length=3, max_length=50, strict=True)]
-    state: Optional[constr(min_length=2, max_length=2, strict=True)]
-    zip_code: Optional[conint(min_length=5, max_length=5, strict=True)]
-    country: Optional[constr(min_length=3, max_length=50, strict=True)]
-    active: Optional[bool]
-
-    class Config:
-        schema_extra = {
-            "example": {
-                "name": "Supplier Name",
-                "lastname": "Supplier Lastname",
-                "email": "supplier@email.com",
-                "phone": 1234567890,
-                "address": "Supplier Address",
-                "city": "Supplier City",
-                "state": "Supplier State",
-                "zip_code": 12345,
-                "country": "Supplier Country",
-                "active": True
-                }
-            }
-
+        
+    @classmethod
+    def as_optional(cls):
+        annotations = cls.__fields__
+        fields = {
+            attribute: (Optional[data_type.type_], None)
+            for attribute, data_type in annotations.items()
+        }
+        OptionalModel = create_model(f"Optional{cls.__name__}", **fields)
+        return OptionalModel
 
 def ResponseModelSupplier(data, message):
     return {
@@ -68,5 +47,5 @@ def ResponseModelSupplier(data, message):
         "message": message,
     }
 
-def ErrorRespondeModelSupplier(error, code, message):
+def ErrorResponseModelSupplier(error, code, message):
     return {"error": error, "code": code, "message": message}
