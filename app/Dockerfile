@@ -1,13 +1,15 @@
-FROM python:3.9.6-alpine
+FROM python:3.10.12-alpine
 
-WORKDIR /app/
+WORKDIR /app
 ENV PYTHONDONOTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
 RUN pip install --upgrade pip
-COPY requirements.txt /app/
-RUN pip install -r requirements.txt
+COPY requirements.txt .
+
+
+RUN pip install --no-cache-dir --upgrade -r requirements.txt
 
 COPY ./ ./app
 
-ENTRYPOINT python app/main.py 
+ENTRYPOINT python app/main.py

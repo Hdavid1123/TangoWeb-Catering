@@ -6,11 +6,11 @@ class SchemaSupplier(BaseModel):
     name: constr(min_length=3, max_length=50, strict=True) = Field(...)
     lastname: constr(min_length=3, max_length=50, strict=True) = Field(...)
     email: EmailStr = Field(...)
-    phone: conint(min_length=10, max_length=10,strict=True) = Field(...)
+    phone: constr(min_length=3, max_length=50, strict=True) = Field(...)
     address: constr(min_length=3, max_length=50, strict=True) = Field(...)
     city: constr(min_length=3, max_length=50, strict=True) = Field(...)
-    state: constr(min_length=2, max_length=2, strict=True) = Field(...)
-    zip_code: conint(min_length=5, max_length=5, strict=True) = Field(...)
+    state: constr(min_length=2, max_length=20, strict=True) = Field(...)
+    zip_code: constr(min_length=3, max_length=50, strict=True) = Field(...)
     country: constr(min_length=3, max_length=50, strict=True) = Field(...)
     active: bool = Field(True)
 
@@ -20,11 +20,11 @@ class SchemaSupplier(BaseModel):
                 "name": "Supplier Name",
                 "lastname": "Supplier Lastname",
                 "email": "supplier@email.com",
-                "phone": 1234567890,
+                "phone": "1234567890",
                 "address": "Supplier Address",
                 "city": "Supplier City",
                 "state": "Supplier State",
-                "zip_code": 12345,
+                "zip_code": "12345",
                 "country": "Supplier Country",
                 "active": True
                 }
